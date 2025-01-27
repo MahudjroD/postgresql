@@ -1,1 +1,1 @@
-# infras-database-postgresql
+# PostgreSQL : moteur de base de données relationnelle (opensource)*
