@@ -1,0 +1,23 @@
+# Crache du serveur master et problème de stockage après accumulation de fichiers wal
+
+1 - identifier le dernier fichiers WAL que le replica possède 
+
+<<  ls -ltr /var/lib/postgresql/15/main/pg_wal/ | tail -n 10 <<
+
+2 - Sur le maître surppimer uniquement les WAL plus anciens que le dernier fichier WAL sur le replica tout en tenant compte de la dernière date ou le système était disponible 
+
+<< find /var/lib/postgresql/15/main/pg_wal/ -type f -mtime +3 -delete << ( cas ou la durée est de 3 jours  )
+
+3 - Rédemarrer PostgreSQL 
+
+<< sudo systemctl restart postgresql <<
+
+4 - ajouter une règle pour purger uniquement les anciens fichiers WAL  
+
+<< wal_keep_size = 1024  # (Taille en Mo) <<
+
+5 - mettre en place la compression des WAL 
+
+<< wal_compression = on << 
+
+ 
